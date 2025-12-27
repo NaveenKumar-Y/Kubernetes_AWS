@@ -9,11 +9,14 @@ module "VPC" {
 }
 
 module "aws_eks_cluster" {
-  source         = "../../modules/eks_cluster"
-  cluster_name   = "dev-eks"
+  depends_on = [ module.VPC ]
+  source         = "../../modules/eks_cluster1"
+  cluster_name   = "demo-eks"
   eks_version    = "1.30"
-  eks_subnet_ids = module.VPC.private_subnet
-  environment    = var.environment
-  node_groups    = var.node_groups
+  # eks_subnet_ids = module.VPC.private_subnet
+  # environment    = var.environment
+  # node_groups    = var.node_groups
+  # vpc_id = module.VPC.vpc_id
+  # additional_policy_arns = 
 }
 

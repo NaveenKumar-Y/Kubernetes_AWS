@@ -2,7 +2,9 @@ resource "aws_eks_cluster" "my_eks_cluster" {
   name = var.cluster_name
 
   access_config {
-    authentication_mode = "API"
+    # authentication_mode = "API"
+    authentication_mode                         = "CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
   }
 
   role_arn = aws_iam_role.cluster.arn
@@ -23,30 +25,6 @@ resource "aws_eks_cluster" "my_eks_cluster" {
   depends_on = [
     aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
   ]
-}
-
-resource "aws_iam_role" "cluster" {
-  name = "eksClusterRole"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "sts:AssumeRole",
-          "sts:TagSession"
-        ]
-        Effect = "Allow"
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.cluster.name
 }
 
 # data "aws_iam_role" "pre_defined" {
