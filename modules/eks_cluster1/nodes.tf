@@ -107,6 +107,16 @@ resource "aws_vpc_security_group_ingress_rule" "node_security_group_ingress" {
   referenced_security_group_id = aws_security_group.node_security_group.id
 }
 
+# resource "aws_vpc_security_group_ingress_rule" "node_security_group_ingress_ssh" {
+#   description                  = "Allow ssh"
+#   ip_protocol                  = "tcp"
+#   from_port                    = 22
+#   to_port                      = 22
+# #   cidr_ipv6         = "::/0"
+#   cidr_ipv4         = "${chomp(regex("([0-9]{1,3}\\.){3}", data.http.cloudshell_ip.body))}/32"
+#   security_group_id            = aws_security_group.node_security_group.id
+# }
+
 # CloudFormation defaults to egress all. Terraform does not.
 resource "aws_vpc_security_group_egress_rule" "node_egress_all" {
   description       = "Allow node egress to anywhere"
@@ -132,6 +142,8 @@ resource "aws_vpc_security_group_ingress_rule" "control_plane_egress_to_node_sec
   to_port                      = 443
   ip_protocol                  = "TCP"
 }
+
+
 
 #
 # Now follows several rules that are applied to the EKS cluster security group

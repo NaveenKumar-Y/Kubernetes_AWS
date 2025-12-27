@@ -2,40 +2,25 @@
 provider "aws" {
   # Configuration options
   region = "us-east-1"
-
-  # access via credentials file
-  # shared_credentials_file = "~/.aws/credentials"
-  # 
-  # [naveen]
-  # aws_access_key_id = xxx
-  # aws_secret_access_key = xxx
-  # ```
-
-  # profile = "naveen"
   profile = "default"
-
-  ###################################################
-  # or
-  # access directly in provider :
-  # access_key = "xxxxxxxxxxxxxxxxxxxxxx"
-  # secret_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
-
 }
 
 
-###################################################
-# or
-# access via environment variables:
+data "aws_eks_cluster" "this" {
+  depends_on = [module.aws_eks_cluster]
+  name = module.aws_eks_cluster.cluster_name
+}
 
-# linux
-# export AWS_ACCESS_KEY_ID="xxxxxxxxxxxxxxxxxxxxx"
-# export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-# export AWS_REGION="us-east-1"
+data "aws_eks_cluster_auth" "this" {
+  depends_on = [module.aws_eks_cluster]
+  name = module.aws_eks_cluster.cluster_name
+}
 
-
-# windows
-# $AWS_ACCESS_KEY_ID="xxxxxxxxxxxxxxxxxxxxxx"
-# $AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-# $AWS_REGION="us-east-1"
-
+# for auth-config map
+provider "kubernetes" {
+  # alias = "eks"
+  host                   = data.aws_eks_cluster.this.endpoint
+  # host = "https://FF651F3DEEF650E857ACB94480112942.gr7.us-east-1.eks.amazonaws.com"
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.this.token
+}
