@@ -1,4 +1,4 @@
-This module is derived from the Kodekloud reference repository, with the primary goal of testing the deployment of an EKS cluster utilizing predefined and mandatory naming conventions, in conjunction with CloudFormation stacks and Terraform.
+This module is derived from the Kodekloud reference repository, with the primary goal of testing the deployment of an EKS cluster utilizing predefined and mandatory naming conventions, in conjunction with CloudFormation stack and Terraform.
 
 The learning and setup processes have been refactored into the eks_cluster module, which now includes:
 
