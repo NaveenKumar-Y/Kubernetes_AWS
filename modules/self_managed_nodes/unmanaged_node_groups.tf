@@ -58,6 +58,22 @@ resource "aws_vpc_security_group_ingress_rule" "control_plane_egress_to_node_sec
   ip_protocol                  = "TCP"
 }
 
+# for SSM 
+resource "aws_vpc_security_group_egress_rule" "ssm_https_outbound" {
+  security_group_id = aws_security_group.node_security_group.id
+
+  # SSM Agent communicates via HTTPS (Port 443)
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
+
+  # SSM endpoints are public; allow access to all IPs
+  cidr_ipv4   = "0.0.0.0/0"
+  
+  description = "Allow outbound HTTPS for AWS Systems Manager"
+}
+
+
 #
 # Now follows several rules that are applied to the EKS cluster security group
 # to allow nodes to access control plane

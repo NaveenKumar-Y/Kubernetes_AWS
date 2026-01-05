@@ -24,3 +24,11 @@ variable "node_groups" {
   }))
 
 }
+
+# variable "github_pat_token" {
+  
+# }
+
+# variable "GH_REPO_URL" {
+#   default = "https://github.com/NaveenKumar-Y/Docker/"
+# }

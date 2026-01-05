@@ -9,5 +9,11 @@ terraform {
       version = "~> 3.0"
     #   configuration_aliases = [ kubernetes.eks ]
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 3.0"
+    }
   }
+
+  required_version = "~>1.12.0"
 }
