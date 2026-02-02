@@ -18,7 +18,7 @@ locals {
 
 resource "kubernetes_config_map_v1" "aws_auth" {
 
-#   provider = kubernetes
+  # provider = kubernetes.aws
 
   metadata {
     name      = "aws-auth"
@@ -30,6 +30,8 @@ resource "kubernetes_config_map_v1" "aws_auth" {
 
   data = {
     mapRoles = yamlencode(local.node_roles)
+
+
     # mapUsers = yamlencode(local.admin_users)
     # You can also add mapAccounts if needed:
     # mapAccounts = yamlencode([])

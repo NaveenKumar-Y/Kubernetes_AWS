@@ -26,6 +26,9 @@ To create an EKS cluster in the dev environment, follow these steps:
 
 This will create an EKS cluster, self-managed nodes in an Auto Scaling Group, and a Kubernetes auth config map to add nodes to the EKS cluster.
 
+To access services on localhost:
+```kubectl port-forward -n argocd deployment.apps/argocd-server 8080    ```
+
 ## Prerequisites
 
 Before you can run Terraform, make sure you have the following:

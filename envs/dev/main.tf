@@ -22,9 +22,9 @@ module "aws_eks_cluster" {
 
 
 module "self_managed_nodes" {
-  providers = {
-    kubernetes = kubernetes.eks
-  }
+  # providers = {
+  #   kubernetes.aws = kubernetes.aws
+  # }
   source         = "../../modules/self_managed_nodes"
   vpc_id         = module.VPC.vpc_id
   eks_subnet_ids = module.VPC.private_subnet
@@ -38,7 +38,7 @@ module "ecr" {
   environment = var.environment
 } 
 
-module "ec2" {
+module "ec2_github_runner" {
   source = "../../modules/ec2"
   # environment = var.environment
   ec2_public_subnet_id = module.VPC.public_subnet[0]
@@ -60,11 +60,21 @@ resource "time_sleep" "wait_60_seconds" {
 
 module "argocd" {
   depends_on = [ module.aws_eks_cluster , resource.time_sleep.wait_60_seconds ]
-  providers = {
-    kubernetes = kubernetes.eks
-    helm       = helm.eks
-  }
+  # providers = {
+    # kubernetes = kubernetes.aws
+    # helm       = helm.eks
+    # argocd = argocd
+  # }
   source = "../../modules/argocd"
+  cluster_name = module.aws_eks_cluster.cluster_name
   # argocd_helm_chart_version = "6.4.5"
+  
+}
+
+resource "null_resource" "cluster_forward_to_localhost" {
+  depends_on = [ module.argocd ]
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --name ${module.aws_eks_cluster.cluster_name} && kubectl port-forward svc/argocd-server -n argocd 8080:443 & Start-Job -ScriptBlock { kubectl port-forward svc/argocd-server -n argocd 8080:443 }"
+  }
   
 }

@@ -68,3 +68,7 @@ variable "az_zones" {
   #   cidr_blocks = ["0.0.0.0/0"]
   # }]
 # }
+
+variable "environment" {
+  default = "dev"
+}

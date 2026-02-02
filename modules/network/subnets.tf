@@ -28,6 +28,8 @@ resource "aws_subnet" "private" {
 
   tags = {
     Name = "private-subnet-${count.index + 1}"
+    "kubernetes.io/role/internal-elb" = "1"    # MUST NEED: to eks and LB controller know that these subnets used for NLB
+    "kubernetes.io/cluster/${var.environment}-eks-demo" = "owned"  # optional but best practice
   }
 
 }
@@ -39,6 +41,8 @@ resource "aws_subnet" "public" {
   availability_zone = element(var.az_zones, count.index)
   tags = {
     Name = "public-subnet-${count.index + 1}"
+    "kubernetes.io/role/elb" = "1"    # MUST NEED: to eks and LB controller know that these subnets used for ELB
+    "kubernetes.io/cluster/${var.environment}-eks-demo" = "owned"  # optional but best practice
   }
 }
 

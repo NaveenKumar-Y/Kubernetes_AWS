@@ -32,3 +32,10 @@ variable "node_groups" {
 # variable "GH_REPO_URL" {
 #   default = "https://github.com/NaveenKumar-Y/Docker/"
 # }
+
+variable "argocd_username" {
+  type        = string
+  description = "Argo CD username"
+  default     = "admin"
+  
+}

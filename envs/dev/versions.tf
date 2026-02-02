@@ -13,6 +13,12 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 3.0"
     }
+
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.12"
+      # configuration_aliases = [ argocd ]
+    }
   }
 
   required_version = "~>1.12.0"
