@@ -1,4 +1,8 @@
-## kodekloud playground doesn't allow creating node groups
+## kodekloud playground doesn't allow creating Managed node groups, 
+## so commenting below managed node groups
+
+
+
 # resource "aws_eks_node_group" "node_groups" {
 #   for_each =  var.node_groups
 #   cluster_name    = aws_eks_cluster.my_eks_cluster.name
